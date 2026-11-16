@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { downloadPngFile, PNG_EXPORT_EVENT } from '../../lib/images';
-import { ErrorText, Hint, PrimaryButton } from '../form/Form.styles';
-import { ExportContent, ExportDialog, ExportImage, TextButton } from './PngExportDialog.styles';
+import { PNG_EXPORT_EVENT } from '../../lib/images';
+import { ErrorText, Hint } from '../form/Form.styles';
+import {
+  DownloadLink,
+  ExportContent,
+  ExportDialog,
+  ExportImage,
+  TextButton,
+} from './PngExportDialog.styles';
 
 function ExportSheet({ file, onClose }: { file: File; onClose: () => void }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -14,13 +20,23 @@ function ExportSheet({ file, onClose }: { file: File; onClose: () => void }) {
     navigator.canShare({ files: [file] });
 
   useEffect(() => {
-    const objectUrl = URL.createObjectURL(file);
-    setUrl(objectUrl);
+    setUrl('');
+    setError('');
+    // Готовим data URL заранее: нажатие ссылки сразу запускает скачивание.
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') setUrl(reader.result);
+    };
+    reader.onerror = () =>
+      setError('Не удалось подготовить ссылку скачивания. Попробуйте ещё раз.');
+    reader.readAsDataURL(file);
     const dialog = dialogRef.current;
     dialog?.showModal();
     return () => {
       dialog?.close();
-      URL.revokeObjectURL(objectUrl);
+      reader.onload = null;
+      reader.onerror = null;
+      if (reader.readyState === FileReader.LOADING) reader.abort();
     };
   }, [file]);
 
@@ -43,22 +59,21 @@ function ExportSheet({ file, onClose }: { file: File; onClose: () => void }) {
     <ExportDialog ref={dialogRef} aria-labelledby="png-export-title" onCancel={onClose}>
       <ExportContent>
         <h2 id="png-export-title">PNG готов</h2>
+        {!url && !error && <Hint role="status">Подготавливаем скачивание…</Hint>}
         {url && <ExportImage src={url} alt="Готовая карточка для сохранения" />}
-        {canShare ? (
+        {url && (
+          <DownloadLink href={url} download={file.name} target="_blank" rel="noopener">
+            Скачать PNG
+          </DownloadLink>
+        )}
+        {canShare && (
           <>
-            <Hint>В меню телефона выберите «Сохранить изображение» или «Сохранить в Файлы».</Hint>
-            <PrimaryButton type="button" disabled={sharing} onClick={() => void share()}>
-              Сохранить PNG
-            </PrimaryButton>
-          </>
-        ) : (
-          <>
-            <TextButton type="button" onClick={() => downloadPngFile(file)}>
-              Открыть PNG в новой вкладке
+            <TextButton type="button" disabled={sharing} onClick={() => void share()}>
+              Сохранить / поделиться
             </TextButton>
             <Hint>
-              Сохраните изображение через меню браузера или долгим нажатием на него. Редактор
-              останется в исходной вкладке.
+              Если браузер открывает PNG вместо скачивания, выберите «Сохранить в Файлы» через
+              «Сохранить / поделиться».
             </Hint>
           </>
         )}

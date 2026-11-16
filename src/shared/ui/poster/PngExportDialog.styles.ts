@@ -32,6 +32,18 @@ export const ExportImage = styled.img`
   justify-self: center;
 `;
 
+export const DownloadLink = styled.a`
+  display: grid;
+  place-items: center;
+  min-height: 46px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: ${({ theme }) => theme.colors.green};
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+`;
+
 export const TextButton = styled.button`
   min-height: 44px;
   border: 0;
