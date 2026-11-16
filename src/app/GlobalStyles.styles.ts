@@ -8,17 +8,28 @@ export const globalStyles = (theme: AppTheme) => css`
     box-sizing: border-box;
   }
   html {
-    overflow-x: clip;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
   }
   body {
     margin: 0;
-    min-width: 320px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     background: ${theme.colors.background};
     color: ${theme.colors.text};
     font-family: ${theme.fonts.body};
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-wrap: break-word;
+  }
+  #root {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: clip;
   }
   button,
   input,

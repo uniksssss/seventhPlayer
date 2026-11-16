@@ -32,7 +32,7 @@ function ExportSheet({ file, onClose }: { file: File; onClose: () => void }) {
       onClose();
     } catch (reason) {
       if (!(reason instanceof Error && reason.name === 'AbortError')) {
-        setError('Не удалось открыть меню сохранения. Попробуйте «Скачать файл».');
+        setError('Не удалось открыть меню сохранения. Попробуйте ещё раз.');
       }
     } finally {
       setSharing(false);
@@ -44,20 +44,24 @@ function ExportSheet({ file, onClose }: { file: File; onClose: () => void }) {
       <ExportContent>
         <h2 id="png-export-title">PNG готов</h2>
         {url && <ExportImage src={url} alt="Готовая карточка для сохранения" />}
-        {canShare && (
+        {canShare ? (
           <>
             <Hint>В меню телефона выберите «Сохранить изображение» или «Сохранить в Файлы».</Hint>
             <PrimaryButton type="button" disabled={sharing} onClick={() => void share()}>
-              Сохранить / поделиться
+              Сохранить PNG
             </PrimaryButton>
           </>
+        ) : (
+          <>
+            <TextButton type="button" onClick={() => downloadPngFile(file)}>
+              Открыть PNG в новой вкладке
+            </TextButton>
+            <Hint>
+              Сохраните изображение через меню браузера или долгим нажатием на него. Редактор
+              останется в исходной вкладке.
+            </Hint>
+          </>
         )}
-        <TextButton type="button" onClick={() => downloadPngFile(file)}>
-          Скачать файл
-        </TextButton>
-        <Hint>
-          Если браузер откроет изображение отдельно, редактор останется в исходной вкладке.
-        </Hint>
         {error && <ErrorText role="alert">{error}</ErrorText>}
         <TextButton type="button" onClick={onClose}>
           Вернуться к редактированию
