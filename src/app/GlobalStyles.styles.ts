@@ -7,6 +7,9 @@ export const globalStyles = (theme: AppTheme) => css`
   *::after {
     box-sizing: border-box;
   }
+  html {
+    overflow-x: clip;
+  }
   body {
     margin: 0;
     min-width: 320px;

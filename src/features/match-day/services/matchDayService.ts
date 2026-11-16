@@ -59,7 +59,7 @@ export async function renderMatchDay(data: MatchDayData): Promise<HTMLCanvasElem
     data.photo ? loadImage(data.photo) : null,
     data.homeLogo ? loadImage(data.homeLogo) : null,
     data.awayLogo ? loadImage(data.awayLogo) : null,
-    loadImage(data.theme === 'dark' ? '/лого строка светлый.png' : '/лого строка.png'),
+    loadImage(data.theme === 'dark' ? '/brand-line-light.png' : '/лого строка.png'),
   ]);
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = POSTER_SIZE;

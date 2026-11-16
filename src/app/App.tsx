@@ -9,6 +9,7 @@ import { MatchDayEditor } from '../pages/match-day/MatchDayEditor';
 import { MatchScoreEditor } from '../pages/match-score/MatchScoreEditor';
 
 import { MatchStatsEditor } from '../pages/match-stats/MatchStatsEditor';
+import { PngExportDialog } from '../shared/ui/poster/PngExportDialog';
 
 export function App() {
   const [route, setRoute] = useState(window.location.hash);
@@ -34,6 +35,7 @@ export function App() {
       ) : (
         <HomePage />
       )}
+      <PngExportDialog />
     </ThemeProvider>
   );
 }

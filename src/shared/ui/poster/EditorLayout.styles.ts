@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
 export const Page = styled.div`
+  width: 100%;
+  min-width: 0;
   max-width: 480px;
   margin: 0 auto;
   padding: max(8px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));

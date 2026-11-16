@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 
 export const Form = styled.form`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: 10px;
   margin-top: 10px;
 `;

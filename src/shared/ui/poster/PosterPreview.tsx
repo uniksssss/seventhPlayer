@@ -20,12 +20,16 @@ export function PosterPreview<T>({ data, render, size, description }: PosterPrev
     setError('');
     render(data)
       .then((canvas) => {
-        if (cancelled) return;
-        const context = canvasRef.current?.getContext('2d');
-        if (!context) throw new Error('Не удалось показать превью.');
-        context.canvas.width = canvas.width;
-        context.canvas.height = canvas.height;
-        context.drawImage(canvas, 0, 0);
+        try {
+          if (cancelled) return;
+          const context = canvasRef.current?.getContext('2d');
+          if (!context) throw new Error('Не удалось показать превью.');
+          context.canvas.width = canvas.width;
+          context.canvas.height = canvas.height;
+          context.drawImage(canvas, 0, 0);
+        } finally {
+          canvas.width = canvas.height = 0;
+        }
       })
       .catch(() => {
         if (!cancelled)

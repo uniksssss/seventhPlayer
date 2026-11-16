@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const Fields = styled.fieldset`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   min-width: 0;
   padding: 0;
@@ -11,6 +12,7 @@ export const Fields = styled.fieldset`
 
 export const Group = styled.fieldset`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
   min-width: 0;
   padding: 0;
@@ -27,6 +29,7 @@ export const Legend = styled.legend`
 
 export const Label = styled.label`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 4px;
   min-width: 0;
   font-size: 12px;
@@ -34,6 +37,7 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   width: 100%;
+  max-width: 100%;
   min-width: 0;
   min-height: 44px;
   padding: 8px 10px;
@@ -42,6 +46,15 @@ export const Input = styled.input`
   background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.text};
   font-size: 16px;
+  &[type='date'],
+  &[type='time'] {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  &::-webkit-date-and-time-value {
+    min-width: 0;
+    text-align: left;
+  }
   &[aria-invalid='true'] {
     border-color: ${({ theme }) => theme.colors.red};
   }
